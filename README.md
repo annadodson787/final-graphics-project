@@ -31,8 +31,8 @@ that the gradient changes very slowly over time. Finally, the height is scaled u
 We added Perlin noise at multiple frequencies to generate both larger and smaller textures
 in the terrain. The parameters which we found to work best were:
 
-- 30 ∗(pn.noise(xof f, zof f,. 5 f))− 15
-- 20 ∗(pn.noise(x, z,. 99 f))− 10
+30*(pn.noise(xof f, zof f,. 5 f)) − 15
+20*(pn.noise(x, z,. 99 f)) − 10
 
 Note that while the first texture is dependent on the offset x and z, the latter is dependent
 on raw x and z, which scale much faster. To account for this, the third parameter to the 3D
@@ -65,13 +65,9 @@ The images generated from this technique look like this:
 
 For the second pass, we want to render the textures created from the caustic generation step
 onto the objects in the scene and use them as a lighting source that appears natural. We
-
-
-```
 can then apply them in a time-varying way by updating the caustics passed to the fragment
 shader.
-```
-```
+
 The first step was to get the textures mapped onto the scene. In order to do this, we pass
 the caustics as a sampler2D object to the fragment shader and read in the texture, passing
 it to whatever lighting effect is already in place. The sampling on the caustic effect had to
@@ -82,6 +78,7 @@ each object, not added, because we want the caustic to darken the image where th
 shadows and lighten it where there are not. The effect was also altered slightly to appear a
 bit bluish in both the shadow regions and the light regions by modifying the blue channel of
 the light by a constant factor, effectively rendering a deep-ocean effect.
+
 ```
 1 // normalizing uv f o r generative texture patterning
 2 vtx normalized uv = vec2 (( pos. x) /500. f , ( pos. z ) /500. f ) ;
@@ -96,16 +93,13 @@ the light by a constant factor, effectively rendering a deep-ocean effect.
 . 1 ) ;
 
 ```
+
 Notice how the existing lighting effect persists; there is still a contour effect on the areas
 which would be partially occluded or shaded from the lights in the scene. Additionally, the
 texture had to be applied multiple times, since the landscape space was much larger than
 the caustic images we generated.
-```
-```
-The original caustic images were quite sharp, appearing as though they might be refractions
-```
 
-```
+The original caustic images were quite sharp, appearing as though they might be refractions
 on the bottom of a swimming pool. In order to simulate the murkiness of ocean water, we
 sampled from multiple caustic images at once. All in all, there were 5 caustic sampler2Ds
 passed to the fragment shaders. This was also helpful in aiding with the animation transi-
@@ -119,22 +113,19 @@ vtx caustic uv ) +.05∗texture ( caustic5 , vtx caustic uv ) ;
 As mentioned above, by passing the caustic maps to the shared vertex shader we were able
 to render the caustic effects on all objects, not just the sea floor. One excellent side effect of
 this is the appearance of ”Gods Rays” on the cliff wall.
-```
+
 ### Animation with Caustic Mapping
 
-```
+
 The final part of implementing caustic mapping was rendering a realistic animation sequence
 for the shadows on the surfaces of the objects. In order to implement this, we loaded in 16
 different images based on the temporal caustic function explained above. However, rendering
 each of the images one after another appeared very choppy. Therefore, we had to apply a
 blended solution.
-```
-```
+
 To ease the transition between frames, we scaled the time vector down and also passed in
 five different caustic textures per cycle, which looped around in a switch statement which
 was dependent on time. The overall caustic color, then, was computed as a weighted sum of
-```
-
 the five caustic texture samples.
 
 ### Ship Rendering
@@ -150,9 +141,6 @@ cated non-transparent background objects during rendering. To combat this we imp
 fragment discarding in the ship sail fragment shader, ignoring any fragments with an alpha
 value less than .9. This eliminates the undesired translucence effect.
 
-```
-Pre- Fragment Discarding Post- Fragment Discarding
-```
 ### Fog
 
 We added an exponential fog effect by we altering the vertex shader to output a visibility
@@ -189,10 +177,7 @@ call to ReadFromObjFile into a cumulative triangle mesh.
 
 ## Results
 
-Some nice result images are shown in the following pages. See our attached video in the
-upload additionally for a full rendering and animation effect.
-
-
+Some nice result images are shown in the `results/` folder.
 
 ## Contributions
 
