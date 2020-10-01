@@ -1,8 +1,8 @@
 # COSC 77 Final Project Report
 
 ### Benjamin Coleman, Anna Dodson
-
-### October 1, 2020
+### Dartmouth College Computer Science
+### Prof. Bo Zhu
 
 ## Image Overview
 
